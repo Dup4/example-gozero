@@ -11,20 +11,34 @@ import (
 
 type OrderCreateLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx          context.Context
+	svcCtx       *svc.ServiceContext
+	productLogic *ProductLogic
 }
 
 func NewOrderCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OrderCreateLogic {
 	return &OrderCreateLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:       logx.WithContext(ctx),
+		ctx:          ctx,
+		svcCtx:       svcCtx,
+		productLogic: NewProductLogic(ctx, svcCtx),
 	}
 }
 
-func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateRequest) (resp *types.OrderCreateReply, err error) {
-	// todo: add your logic here and delete this line
+const (
+	success = 0
+	failure = -1
+)
 
-	return
+func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateRequest) (*types.OrderCreateReply, error) {
+	product, err := l.productLogic.productByID(req.ProductID)
+	if err != nil {
+		return nil, err
+	}
+
+	if product.Count > 0 {
+		return &types.OrderCreateReply{Code: success}, nil
+	}
+
+	return &types.OrderCreateReply{Code: failure}, nil
 }

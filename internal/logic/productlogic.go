@@ -23,8 +23,15 @@ func NewProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProductLo
 	}
 }
 
-func (l *ProductLogic) Product(req *types.ProductRequest) (resp *types.ProductReply, err error) {
-	// todo: add your logic here and delete this line
+func (l *ProductLogic) Product(req *types.ProductRequest) (*types.ProductReply, error) {
+	return l.productByID(req.ID)
+}
 
-	return
+func (l *ProductLogic) productByID(id int64) (*types.ProductReply, error) {
+	return &types.ProductReply{
+		ID:    id,
+		Name:  "apple watch 3",
+		Price: 3333.33,
+		Count: 99,
+	}, nil
 }
