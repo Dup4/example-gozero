@@ -1,0 +1,17 @@
+syntax = "v1"
+
+type ProductRequest {
+    ID int64 `path:"id"`
+}
+
+type ProductReply {
+    ID    int64   `json:"id"`
+    Name  string  `json:"name"`
+    Price float64 `json:"price"`
+    Count int64   `json:"count"`
+}
+
+service mall-api {
+    @handler ProductHandler
+    get /product/:id (ProductRequest) returns (ProductReply)
+}

@@ -1,0 +1,31 @@
+syntax = "v1"
+
+import "order.api"
+
+type (
+	UserRequest {
+		ID int64 `path:"id"`
+	}
+
+	UserReply {
+		ID      int64   `json:"id"`
+		Name    string  `json:"name"`
+		Balance float64 `json:"balance"`
+	}
+
+	UserOrdersRequest {
+		ID int64 `path:"id"`
+	}
+
+	UserOrdersReply {
+		Orders []*OrderReply `json:"orders"`
+	}
+)
+
+service mall-api {
+	@handler UserHandler
+	get /user/:id (UserRequest) returns (UserReply)
+
+	@handler UserOrdersHandler
+	get /user/:id/orders (UserOrdersRequest) returns (UserOrdersReply)
+}

@@ -1,0 +1,29 @@
+syntax = "v1"
+
+type (
+    OrderRequest {
+        ID string `path:"id"`
+    }
+
+    OrderReply {
+        ID       string `json:"id"`
+        State    uint32 `json:"state"`
+        CreateAt string `json:"create_at"`
+    }
+
+    OrderCreateRequest {
+        ProductID int64 `json:"product_id"`
+    }
+
+    OrderCreateReply {
+        Code int `json:"code"`
+    }
+)
+
+service mall-api {
+    @handler OrderHandler
+    get /order/:id (OrderRequest) returns (OrderReply)
+
+    @handler OrderCreateHandler
+    post /order/create (OrderCreateRequest) returns (OrderCreateReply)
+}
